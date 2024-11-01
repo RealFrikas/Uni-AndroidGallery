@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Ergasia1</string>
+    <string name="title">Gallery</string>
+    <string name="button1">Image1</string>
+    <string name="button2">Image2</string>
+    <string name="button3">Image3</string>
+    <string name="backbutton">Back</string>
+    <string name="art_description">Default description</string>
+</resources>
