@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 public class ShowcaseActivity extends AppCompatActivity {
 
+    MyTts myTts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,15 @@ public class ShowcaseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ShowcaseActivity.this,MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        myTts = new MyTts(this);
+        Button speechbutton = findViewById(R.id.button4);
+        speechbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myTts.speak(paintingDesc);
             }
         });
     }
