@@ -1,6 +1,8 @@
 package com.example.ergasia1;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.content.SharedPreferences;
+//import android.content.SharedPreferences;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,8 +32,27 @@ public class ShowcaseActivity extends AppCompatActivity {
             return insets;
         });
 
+
+        TextView description = findViewById(R.id.descriptiontext);
         ImageView image = findViewById(R.id.imageView);
         int imageId = getIntent().getIntExtra("image_name_key", -1);
+
+
+        SQLiteDatabase db = openOrCreateDatabase("gallery.db", MODE_PRIVATE, null);
+
+        Cursor cursor = db.rawQuery("SELECT * FROM maintable", null);
+        cursor.moveToPosition(imageId);
+        String imagename = cursor.getString(cursor.getColumnIndexOrThrow("imagename"));
+        int imageResId = getResources().getIdentifier(imagename, "drawable", getPackageName());
+        image.setImageResource(imageResId);
+
+        String paintingDesc = cursor.getString(cursor.getColumnIndexOrThrow("paintingdesc"));
+        description.setText(paintingDesc);
+
+        cursor.close();
+        db.close();
+
+        /*
         if (imageId == 0){
             image.setImageResource(R.drawable.img);
         } else if (imageId == 1) {
@@ -39,14 +60,12 @@ public class ShowcaseActivity extends AppCompatActivity {
         } else {
             image.setImageResource(R.drawable.img_2);
         }
+        */
 
-
-
-        String receivedString = getIntent().getStringExtra("KEY_STRING");
-        TextView description = findViewById(R.id.descriptiontext);
-        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE);
-        String paintingDesc = sharedPreferences.getString(receivedString, "No description available");
-        description.setText(paintingDesc);
+        //String receivedString = getIntent().getStringExtra("KEY_STRING");
+        //SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE);
+        //String paintingDesc = sharedPreferences.getString(receivedString, "No description available");
+        //description.setText(paintingDesc);
 
 
         Button backbutton = findViewById(R.id.button);
